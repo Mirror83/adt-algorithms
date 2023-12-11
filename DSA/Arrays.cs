@@ -61,11 +61,10 @@ public static partial class Arrays
 
         // If the target is not found
         return -1;
-
     }
 
     /// <summary>
-    /// Takes in a sorted, possibly rotated array at an unkown index k 
+    /// Takes in a sorted, possibly rotated array at an unknown index k 
     /// such that 1 <= k < "rotatedArray.Length" and the resulting array is 
     /// [nums[k], nums[k+1], ..., nums[n - 1], nums[0], nums[1], ..., nums[k-1]] and from it,
     /// returns k if the array is rotated or -1 if it is not
@@ -78,6 +77,7 @@ public static partial class Arrays
             if (current > rotatedArray[i + 1]) return i;
             current = rotatedArray[i + 1];
         }
+
         return -1;
     }
 
@@ -99,7 +99,7 @@ public static partial class Arrays
             if (nums[i] >= mid && valueOccurrenceMap[nums[i]] == 1)
                 count++;
         }
-            
+
 
         return count;
     }
@@ -162,7 +162,7 @@ public static partial class Arrays
             for (int j = 0; i < nums.Length; j++)
             {
                 int sum = nums[i] + nums[j];
-                if (sum == target) return new List<int> {i + 1, j + 1};
+                if (sum == target) return new List<int> { i + 1, j + 1 };
                 if (sum > target) break;
             }
         }
@@ -178,10 +178,8 @@ public static partial class Arrays
     /// <returns></returns>
     // public static int[] TwoSum(int[] nums, int target)
     // {
-        
+
     // }
-
-
     [GeneratedRegex(@"[A-Za-z\d]")]
     private static partial Regex MyRegex();
 
@@ -189,11 +187,11 @@ public static partial class Arrays
     {
         if (s.Length == 0) return false;
 
-        StringBuilder sb = new ();
+        StringBuilder sb = new();
         Regex regex = MyRegex();
 
-        foreach (char c in s) 
-        { 
+        foreach (char c in s)
+        {
             if (regex.IsMatch(c.ToString()))
             {
                 sb.Append(c.ToString().ToLower());
@@ -222,9 +220,9 @@ public static partial class Arrays
         {
             sb.Append(nums[i] + ", ");
         }
+
         sb.Append($"{nums[^1]}]");
 
         return sb.ToString();
     }
-
 }
