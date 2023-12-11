@@ -1,8 +1,9 @@
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace DSA;
 
-public static class Recursion
+public static partial class Recursion
 {
     private static void DrawLine(int tickLength, string label = "")
     {
@@ -62,7 +63,7 @@ public static class Recursion
             return total;
         }
 
-        
+
         var dirInfo = new DirectoryInfo(path);
         total += ImmediateUsage(dirInfo);
         total += dirInfo.GetDirectories().Sum(dir => DiskUsage(dir.FullName));
@@ -90,7 +91,7 @@ public static class Recursion
     {
         // If there are at least 2 elements in the implicit range
         if (start >= stop - 1) return;
-        
+
         (sequence[start], sequence[stop - 1]) = (sequence[stop - 1], sequence[start]);
         Reverse(sequence, start + 1, stop - 1);
     }
@@ -112,5 +113,81 @@ public static class Recursion
 
         return result;
     }
-    
+
+    public static int Max(IList<int> sequence)
+    {
+        if (!sequence.Any()) throw new ArgumentException("Argument cannot be an empty list!");
+        return RecursiveMax(sequence, 0, sequence[0]);
+    }
+
+    private static int RecursiveMax(IList<int> sequence, int n, int currentMax)
+    {
+        if (n >= sequence.Count - 1) return currentMax;
+
+        if (sequence[n + 1] > currentMax) currentMax = sequence[n + 1];
+        return RecursiveMax(sequence, n + 1, currentMax);
+    }
+
+    public static (int, int) AltMaxMin(IList<int> sequence, int n)
+    {
+        if (n == 0) return (sequence[0], sequence[0]);
+
+        var (currentMax, currentMin) = AltMaxMin(sequence.Skip(count: 1).ToList(), n - 1);
+        var nextMax = currentMax > sequence[0] ? currentMax : sequence[0];
+        var nextMin = currentMin < sequence[0] ? currentMin : sequence[0];
+
+        return (nextMax, nextMin);
+    }
+
+    public static int ConvertToInt(this string str, int n)
+    {
+        if (string.IsNullOrEmpty(str) || MyRegex().IsMatch(str))
+        {
+            throw new ArgumentException("Invalid string");
+        }
+
+        if (n == 0) return 0;
+
+        return ConvertToInt(str, n - 1) + str[n - 1].IntConverter() * PlaceValue(str, n - 1);
+    }
+
+    private static int IntConverter(this char ch)
+    {
+        return ch switch
+        {
+            '1' => 1,
+            '2' => 2,
+            '3' => 3,
+            '4' => 4,
+            '5' => 5,
+            '6' => 6,
+            '7' => 7,
+            '8' => 8,
+            '9' => 9,
+            '0' => 0,
+            _ => throw new ArgumentException("Only numeric chars (e.g. '1') are accepted")
+        };
+    }
+
+    private static int PlaceValue(string str, int i)
+    {
+        return (int)Power(10, str.Length - 1- i);
+    }
+
+    public static bool IsPalindrome(this string str)
+    {
+        return RecursiveIsPalindrome(str, str.Length - 1);
+        // return !str.Where((t, i) => t != str[str.Length - 1 - i]).Any();
+    }
+
+    private static bool RecursiveIsPalindrome(string str, int n)
+    {
+        if (n >= 0) return true;
+        if (str[n] != str[str.Length - 1 - n]) return false;
+        return RecursiveIsPalindrome(str, n - 1);
+        
+    }
+
+    [GeneratedRegex("\\D")]
+    private static partial Regex MyRegex();
 }
